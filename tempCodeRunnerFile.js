@@ -1,0 +1,1 @@
+const magical = () => new Date();
