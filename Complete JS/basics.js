@@ -1118,7 +1118,260 @@ const Rsum = (function () {
     return args.reduce((a, b) => a + b, 0); // 0 is default value
   };
 })();
-console.log(Rsum(2,5,1,4,3,3,5));
+console.log(Rsum(2, 5, 1, 4, 3, 3, 5));
 
 //* Use the Spread Operator to Evaluate Arrays In-Place
+const arr1 = ["JAN", "FEB", "MAR", "APR", "MAY"];
+let arr2;
+(function () {
+  arr2 = arr1; // Both the arr1 and arr2 are same.
+  // According to the above line, there ISN'T any creation of the copy of arr1 to arr2.
+  // The above line of code means that now, the arr2 and arr1 are same (linked to each other).
+  // i.e. if we change arr1, then arr2 will also get changed.
+  arr1[0] = "Potato";
+})();
+console.log(arr1);
+console.log(arr2);
 
+// THE PURPOSE OF USING THE SPREAD OPERATOR:
+// The spread operator looks just like the rest operator, but it spreads out the array.
+// It takes an array and spread it out into individual parts.
+const array1 = ["JAN", "FEB", "MAR", "APR", "MAY"];
+let array2;
+(function () {
+  array2 = [...array1]; // use of spread operator
+  // The above line of code DOES'NT means that both the array are one and the same.
+  // It spreads out the array1 into individual elements and assigns only the contents of the array1 to array2 and not the entire array.
+  // So now, array2 has all the elements of the array1 and itself acts independently such that even if we change the contents of array1, array2 will not get changed.
+  array1[0] = "Potato";
+})();
+console.log(array1);
+console.log(array2);
+
+//* Use Destructuring Assignment to Assign Variables from Objects
+var voxel = { x: 3.6, y: 7.4, z: 6.54 };
+
+// First, there is a basic method to assign each element of the object to a variable manually.
+var x = voxel.x;
+var y = voxel.y;
+var z = voxel.z;
+
+// This is a special syntax for neatly assigning values taken directly from an object to a variable.
+// So, here's the destructuring syntax:
+const { x: aFirst, y: bSecond, z: cThird } = voxel;
+
+const AVG_TEMPERATURES = {
+  today: 25,
+  tomorrow: 35,
+};
+
+function getTempOfTmrw(avgTemperatures) {
+  "use strict";
+  const { tomorrow: tempOfTomorrow } = avgTemperatures;
+  // Take 'tomorrow' element from the object 'AVG_TEMPERATURES' which is being passed and assign it to variable 'tempOfTomorrow'.
+  return tempOfTomorrow;
+}
+console.log(getTempOfTmrw(AVG_TEMPERATURES));
+
+//* Destructuring Assignment with Nested Objects
+const LOCAL_FORECAST = {
+  today: { min: 72, max: 83 },
+  tomorrow: { min: 73.3, max: 84.6 },
+};
+
+function getMaxOfTmrw(forecast) {
+  "use strict";
+  const {
+    tomorrow: { max: maxOfTomorrow },
+  } = forecast;
+  return maxOfTomorrow;
+}
+console.log(getMaxOfTmrw(LOCAL_FORECAST));
+
+//* Use Destructuring Assignment to Assign Variables from Arrays
+const [z1, x1, , y1] = [1, 2, 3, 4, 5, 6, 7, 8];
+console.log(z1, x1, y1);
+let a1 = 25,
+  b1 = 35;
+(() => {
+  "use strict";
+  [a1, b1] = [b1, a1];
+})();
+console.log(a1);
+console.log(b1);
+
+//* Use Destructuring Assignment with the Rest Operator
+const source = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+function removeFirstTwo(list) {
+  const [, , ...arrX] = list;
+  // This above line of code means that the array 'source'(i.e. list) is taken as an argument to the function and is converted into an array of elements except the first two elements.
+
+  return arrX;
+}
+const arrX = removeFirstTwo(source);
+console.log(source);
+console.log(arrX);
+
+//* Use Destructuring Assignment to Pass an Object as a Function's Parameters
+const stats = {
+  max: 56.78,
+  standardDeviation: 4.34,
+  median: 34.54,
+  mode: 23.87,
+  min: -0.75,
+  average: 35.85,
+};
+const half = (function () {
+  // return function half(stats)
+  return function half(
+    { max, min } // Better Alternative // We can directly call only the elements we want to use instead of passing the entire object 'stats'
+  ) {
+    // return (stats.max + stats.min)/2.0
+    return (max + min) / 2.0; // Better Alternative
+  };
+})();
+console.log(stats);
+console.log(half(stats)); // Here, we will still pass the entire object 'stats' instead of just passing stats.max, stats.min
+
+//* Create Strings using Template Literals
+const person = { pName: "Keshav Mandal", pAge: 18 };
+
+// Template literal with multi-line and string interpolation
+const pGreeting = `Hello, I am "${person.pName}".
+I am '${person.pAge}' years old.`;
+/* There are three advantages of using backtick(`) instead of single quotes and double quotes:
+1. We can write multi-line string.
+2. We can use single quotes and double quotes inside the backtick without any restrictions.
+3. We can pass in the javascript inside the ${variable_name} and print the contents of it.
+*/
+console.log(pGreeting);
+
+// Coding Challenge::
+const result = {
+  success: ["max-length", "no-amd", "prefer-arrow-functions"],
+  failure: ["no-var", "var-on-top", "line-break"],
+  skipped: ["id-blacklist", "no-dup-keys"],
+};
+function makeList(arr) {
+  const resultDisplayArray = [];
+  for (let i = 0; i < arr.length; i++) {
+    resultDisplayArray.push(`<li class="text-warning">${arr[i]}</li>`);
+  }
+
+  return resultDisplayArray;
+}
+/*************
+ * makeList(result.failure) should return:
+ * [ `<li class="text-warning">no-var</li>`,
+ * `<li class="text-warning">var-on-top</li`,
+ * `<li class="text-warning">linebreak</li>` ]
+ **************/
+const resultDisplayArray = makeList(result.failure);
+console.log(resultDisplayArray);
+
+//* Write Concise Object Literal Declarations Using Simple Fields
+/*
+const createPerson = (cName, age, gender) => {
+  return { name: cName, age: age, gender: gender };
+};
+console.log(createPerson("Keshav Mandal", 18, "male"));
+*/
+
+//  Better Method:
+const createPerson = (cName, age, gender) => ({ cName, age, gender });
+/* By writing this, javascript knows that:
+1. Whatever is written after the arrow function has to be returned.
+2. {} are used which means it has to return an object.
+3. It will automatically internally assign the elements of the object (whatever is written inside {}) to the key-value pair of the arguments being passed to the function below.*/
+console.log(createPerson("Keshav Mandal", 18, "male"));
+
+//* Write Concise Declarative Functions
+/*
+const bicycle = {
+  gear: 2,
+  setGear: function (newGear) {
+    "use strict";
+    this.gear = newGear;
+  },
+};
+*/
+// An object can contain function but there is a better way of doing this.
+
+const bicycle = {
+  gear: 2,
+  setGear(newGear) {
+    "use strict";
+    this.gear = newGear;
+  },
+};
+
+bicycle.setGear(3);
+console.log(bicycle.gear);
+
+//* Use class Syntax to Define a Constructor Function
+// This is the older version of creating an object:
+var SpaceShuttle = function (targetPlanet) {
+  this.targetPlanet = targetPlanet;
+};
+var zeus = new SpaceShuttle("Jupiter");
+console.log(zeus.targetPlanet);
+
+// The class syntax replaces the constructor function creation.
+class SpaceShuttle1 {
+  constructor(targetPlanet1) {
+    this.targetPlanet1 = targetPlanet1;
+  }
+}
+var zeus = new SpaceShuttle1("Earth");
+// Class constructor SpaceShuttle1 cannot be invoked without 'new'
+console.log(zeus.targetPlanet1);
+
+//* Use getters and setters to Control Access to an Object
+// With the class object you often want to obtain values from the object and set a value of a property within an object.
+// These are often called getters and setters.
+class Book {
+  constructor(author) {
+    this._author = author;
+    // If any variable starts with an underscore, then that means that the variable is a private member and is only accessible within that scope/class.
+  }
+
+  // getter
+  // Getter functions are meant to simply return or get the value of an object's private variable to the user without the user directly accessing the private variable.
+  // So, the private variable is this _author that gets set when you construct the object.
+  get writer() {
+    return this._author;
+  }
+  // Even without having the direct access of the private members of the constructor, we can return the variable _author, this is possible due to the get keyword.
+
+  // setter
+  set writer(updaterAuthor) {
+    this._author = updaterAuthor;
+  }
+}
+const author = new Book("Ridhav");
+console.log(author);
+
+// Another Example:
+function makeClass() {
+  class Thermostat {
+    constructor(temp) {
+      this._temp = (5 / 9) * (temp - 32);
+      // We have to first convert the temperature from Fahrenheit to Celcius because the temperature is passed in Fahrenheit.
+    }
+    get temperature() {
+      return this._temp;
+    }
+    set temperature(updatedTemp) {
+      this._temp = updatedTemp;
+    }
+  }
+  return Thermostat;
+}
+const Thermostat = makeClass();
+const thermos = new Thermostat(76);
+let temp = thermos.temperature;
+// usually there is a paranthesis after a function name but if its a variable or a property name then its not gonaa have a paranthesis.
+// So, getters and setters are accessed similar to properties.
+thermos.temperature = 26;
+temp = thermos.temperature;
+console.log(temp);
